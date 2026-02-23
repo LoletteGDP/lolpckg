@@ -6,8 +6,8 @@ import (
 )
 
 type Responder interface {
-	JSON(w http.ResponseWriter, status int, body any)
-	Error(w http.ResponseWriter, status int, code string, description string)
+	JSON(w http.ResponseWriter, status int, payload any)
+	Error(w http.ResponseWriter, status int, payload any)
 }
 
 type DefaultResponder struct{}
