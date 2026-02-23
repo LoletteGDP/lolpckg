@@ -12,16 +12,13 @@ type Responder interface {
 
 type DefaultResponder struct{}
 
-func (r *DefaultResponder) JSON(w http.ResponseWriter, status int, body any) {
+func (r *DefaultResponder) JSON(w http.ResponseWriter, status int, payload any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(body)
+	_ = json.NewEncoder(w).Encode(payload)
 }
 
-func (r *DefaultResponder) Error(w http.ResponseWriter, status int, code string, description string) {
-	r.JSON(w, status, map[string]any{
-		"type":        "error",
-		"code":        code,
-		"description": description,
-	})
+func (r *DefaultResponder) Error(w http.ResponseWriter, status int, payload any) {
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	r.JSON(w, status, payload)
 }
